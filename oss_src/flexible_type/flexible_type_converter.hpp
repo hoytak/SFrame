@@ -120,6 +120,7 @@ template <> struct ft_converter<3> {
       if(static_cast<Integer>(v) != v) {
         throw_type_conversion_error(src, "integer / convertable float");
       }
+      dest = static_cast<Integer>(v);
     } else if(src.get_type() == flex_type_enum::INTEGER) {
       dest = static_cast<Integer>(src.get<flex_int>());
     } else {
@@ -132,6 +133,7 @@ template <> struct ft_converter<3> {
     dest = Integer(flex_int(src));
   }
 };
+
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -233,7 +235,11 @@ template <> struct ft_converter<6> {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-/** Any pairs of numeric values.
+/** Any pairs of numeric values. This is different from the case below
+ *  since this allows the the std::pair to convert to and from a
+ *  2-element flex_vec if the types in the std::pair are numeric.
+ *  Internally, the logic is the same as the case below if they are
+ *  not strictly doubles.
  */
 template <> struct ft_converter<7> {
 
@@ -242,8 +248,10 @@ template <> struct ft_converter<7> {
     typedef typename second_nested_type<T>::type U2;
 
     return (is_std_pair<T>::value
-            && std::is_arithmetic<U1>::value
-            && std::is_arithmetic<U1>::value);
+            && std::is_convertible<double, U1>::value
+            && std::is_convertible<U1, double>::value
+            && std::is_convertible<double, U2>::value
+            && std::is_convertible<U2, double>::value);
   }
 
   template <typename T, typename U>
@@ -269,7 +277,11 @@ template <> struct ft_converter<7> {
 
   template <typename T, typename U>
   static void set(flexible_type& dest, const std::pair<T,U>& src) {
-    dest = flex_vec{flex_float(src.first), flex_float(src.second)};
+    if(std::is_floating_point<T>::value && std::is_floating_point<U>::value) {
+      dest = flex_vec{flex_float(src.first), flex_float(src.second)};
+    } else {
+      dest = flex_list{convert_to_flexible_type(src.first), convert_to_flexible_type(src.second)};
+    }
   }
 };
 
