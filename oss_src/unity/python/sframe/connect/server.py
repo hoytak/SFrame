@@ -82,7 +82,7 @@ class EmbeddedServer(GraphLabServer):
     Embedded Server loads unity_server into the same process as shared library.
     """
 
-    SERVER_LIB = 'libunity_prop_server.%s' % _sys_util.get_current_platform_dll_extension()
+    SERVER_LIB = 'libunity_server.%s' % _sys_util.get_current_platform_dll_extension()
 
     def __init__(self, server_address, unity_log_file):
         """
@@ -124,8 +124,7 @@ class EmbeddedServer(GraphLabServer):
                                   str_to_char_p_castable(self.server_addr), 
                                   str_to_char_p_castable(self.unity_log),
                                   default_local_conf.log_rotation_interval,
-                                  default_local_conf.log_rotation_truncate,
-                                  self.product_key, self.license_info)
+                                  default_local_conf.log_rotation_truncate)
         except Exception as e:
             _get_metric_tracker().track('server_launch.unity_server_error', send_sys_info=True)
             raise RuntimeError("Cannot start engine. %s" % str(e))
@@ -159,7 +158,7 @@ class EmbeddedServer(GraphLabServer):
     def _load_dll_ok(self, root_path):
         server_env = _sys_util.make_unity_server_env()
         os.environ.update(server_env)
-        for (k, v) in server_env.iteritems():
+        for (k, v) in server_env.items():
             os.putenv(k, v)
 
         # For Windows, add path to DLLs for the pylambda_worker
