@@ -128,4 +128,3 @@ cdef inline map[string, string] dict_to_string_string_map(dict d) except *:
         ret[str_to_cpp(k)] = str_to_cpp(v)
 
     return ret
-

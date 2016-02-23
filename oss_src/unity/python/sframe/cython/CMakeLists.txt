@@ -22,8 +22,6 @@ foreach(source ${cython_sources})
   add_dependencies(cython_targets ${target})
 endforeach()
 
-target_link_libraries(cy_server unity_server)
-
 # Take care of cy_pylambda_workers explicitly. 
 # set_source_files_properties("cy_pylambda_workers.pyx" PROPERTIES CYTHON_IS_CXX TRUE)
 # cython_add_module(cy_pylambda_workers "cy_pylambda_workers.pyx")

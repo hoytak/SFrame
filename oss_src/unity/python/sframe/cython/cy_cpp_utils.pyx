@@ -52,3 +52,25 @@ cdef string _attempt_cast_str_to_cpp(py_s) except *:
 
     # Okay, none of these worked, so error out.
     raise TypeError("Type '%s' cannot be interpreted as str." % str(type(py_s)))
+
+
+def str_to_char_p_castable(py_s):
+    """
+    Use this function to convert any string-like object to something that can be converted to a 
+    """
+    cdef type t = type(py_s)
+    
+    if PY_MAJOR_VERSION >= 3:
+        if t is str:
+            return (<str>py_s).encode()
+        elif t is bytes:
+            return (<bytes>py_s)
+        else:
+            return bytes(py_s)
+    else:
+        if t is str:
+            return (<str>py_s)
+        elif t is unicode:
+            return (<unicode>py_s).encode('UTF-8')
+        else:
+            return str(py_s)
