@@ -30,8 +30,8 @@ def generate_random_sframe(num_rows, column_codes, random_seed = 0):
 
         l:  categorical list with between 0 and 10 unique integer elements from a pool of 100 unique values. 
         L:  categorical list with between 0 and 100 unique integer elements from a pool of 1000 unique values.
-        M:  categorical list with between 0 and 10 unique string elements from a pool of 100 unique values. 
-        m:  categorical list with between 0 and 100 unique string elements from a pool of 1000 unique values.
+        m:  categorical list with between 0 and 10 unique string elements from a pool of 100 unique values. 
+        M:  categorical list with between 0 and 100 unique string elements from a pool of 1000 unique values.
 
         v:  numeric vector with 10 elements and uniform 0-1 elements.
         V:  numeric vector with 1000 elements and uniform 0-1 elements.
