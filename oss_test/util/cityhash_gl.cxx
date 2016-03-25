@@ -151,7 +151,10 @@ class hash_function_test : public CxxTest::TestSuite {
     }
     
     for(long i : values) {
-      DASSERT_EQ(i, long(reverse_index_hash(index_hash(size_t(i)))));
+      size_t v1 = i;
+      DASSERT_EQ(v1, reverse_index_hash(index_hash(v1)));
+      size_t v2 = hash64(i);
+      DASSERT_EQ(v2, reverse_index_hash(index_hash(v2)));
     }
   }  
   
