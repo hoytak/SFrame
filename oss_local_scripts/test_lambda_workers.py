@@ -27,12 +27,16 @@ def test_pylambda_worker():
     environment = os.environ.copy()
     
     from os.path import join
+    from os.path import exists
     import tempfile
     import subprocess
     import datetime
     import time
     import zipfile
-
+    import sys
+    if sys.platform == 'darwin':
+        if exists('/tmp'):
+            tempfile.tempdir = '/tmp'
     temp_dir = tempfile.mkdtemp()
 
     temp_dir_sim = join(temp_dir, "simulated")
