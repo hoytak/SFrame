@@ -26,8 +26,7 @@ def test_pylambda_worker():
 
     environment = os.environ.copy()
     
-    from os.path import join
-    from os.path import exists
+    from os.path import join, exists, split, abspath
     import tempfile
     import subprocess
     import datetime
@@ -43,11 +42,13 @@ def test_pylambda_worker():
     os.mkdir(temp_dir_sim)    
     lambda_log_file_sym = join(temp_dir_sim, "lambda_log")
 
+    main_dir = split(abspath(sframe.__file__))[0]
+    
     # Dump the directory structure.
     print("\nGathering installation information.")
     dir_structure_file = join(temp_dir, "dir_structure.log")
     dir_structure_out = open(dir_structure_file, "w")
-    dump_directory_structure(dir_structure_out)
+    dump_directory_structure(main_dir,dir_structure_out)
     dir_structure_out.close()
     
     print("\nRunning simulation.")
@@ -251,7 +252,7 @@ for f in server_logs:
             pass
  
 
-def dump_directory_structure(out = sys.stdout):
+def dump_directory_structure(main_dir, out = sys.stdout):
     """
     Dumps a detailed report of the graphlab/sframe directory structure
     and files, along with the output of os.lstat for each.  This is useful
@@ -263,7 +264,6 @@ def dump_directory_structure(out = sys.stdout):
     import sys, os
     from os.path import split, abspath, join
     from itertools import chain
-    main_dir = split(abspath(sys.modules[__name__].__file__))[0]
 
     visited_files = []
 
