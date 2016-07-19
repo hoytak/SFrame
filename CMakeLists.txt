@@ -130,6 +130,7 @@ endif()
 add_definitions(-DCURL_STATICLIB)
 add_definitions(-DIN_GRAPHLAB_SOURCE_TREE)
 add_definitions(-DFUSION_MAX_VECTOR_SIZE=20)
+add_definitions(-DBOOST_SPIRIT_THREAD_SAFE)
 
 #**************************************************************************/
 #*                                                                        */
